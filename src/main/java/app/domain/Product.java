@@ -8,6 +8,14 @@ public class Product {
     private double price;
     private boolean active;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public boolean isActive() {
         return active;
     }
