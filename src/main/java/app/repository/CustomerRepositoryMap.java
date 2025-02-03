@@ -43,4 +43,8 @@ public class CustomerRepositoryMap implements CustomerRepositiry{
         dataBase.remove(id);
 
     }
+
+    public static void main(String[] args) {
+       CustomerRepositiry repository = new CustomerRepositoryMap();
+   }
 }
