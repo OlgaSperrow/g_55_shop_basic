@@ -16,6 +16,14 @@ public class Customer {
         this.id = id;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
