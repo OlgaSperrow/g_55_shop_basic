@@ -30,6 +30,10 @@ public class ProductController {
         service.update(product);
     }
 
+    public void deleteById(Long id) {
+        service.deleteById(id);
+    }
+
     public void deleteByTitle(String title){
         service.deleteByTitle(title);
     }
@@ -42,7 +46,7 @@ public class ProductController {
     }
 
     public double getProductTotalCost(){
-        return service.getActiveProductsTotalCost()
+        return service.getActiveProductsTotalCost();
     }
 
 
