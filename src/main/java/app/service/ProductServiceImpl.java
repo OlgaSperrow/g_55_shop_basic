@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         String title = product.getTitle();
-        if (title == null || title.length() < 3) {
+        if (title == null || title.length() < 3 || title.trim().isEmpty()) {
             throw new ProductSaveException("Product title should be at least 3 characters long");
         }
 
@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void restoreById(Long id) {
         Product product = repositiry.findById(id);
-        if(product==null){
+        if (product == null) {
             throw new ProductNotFoundException("Product with id " + id + " not found");
         }
         product.setActive(true);
@@ -110,17 +110,17 @@ public class ProductServiceImpl implements ProductService {
     public double getActiveProductsTotalCost() {
         return getAllActiveProducts()
                 .stream()
-                .mapToDouble(x->x.getPrice())
+                .mapToDouble(x -> x.getPrice())
                 .sum();
     }
 
     @Override
     public double getActiveProductsAveragePrice() {
 
-        long productCount =getActiveProductsTotalCount();
-        if(productCount==0){
+        long productCount = getActiveProductsTotalCount();
+        if (productCount == 0) {
             return 0;
         }
-        return getActiveProductsTotalCost()/productCount;
+        return getActiveProductsTotalCost() / productCount;
     }
 }
