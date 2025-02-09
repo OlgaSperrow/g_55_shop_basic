@@ -12,6 +12,13 @@ public class Customer {
     private boolean active;
     private List<Product> products = new ArrayList<>();
 
+    public Customer(Long id, String newName) {
+    }
+
+    public Customer(String name) {
+        this.name = name;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

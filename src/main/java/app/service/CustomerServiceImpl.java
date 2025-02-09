@@ -13,10 +13,11 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepositiry repository;
     private final ProductService productService;
 
-    public CustomerServiceImpl(CustomerRepositiry repositiry, ProductService productService) {
+    public CustomerServiceImpl(CustomerRepositiry repositiry) {
         this.repository = repositiry;
         this.productService = productService;
     }
+
 
     @Override
     public Customer save(Customer customer) {
