@@ -18,6 +18,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+
     public Customer save(String name){
         Customer customer = new Customer(name);
         return customerService.save(customer);
@@ -32,7 +33,7 @@ public class CustomerController {
     }
 
     public void customerUpdate(Long id, String newName){
-        Customer customer = new Customer(newName);
+        Customer customer = new Customer(id, newName);
         customerService.update(customer);
     }
 

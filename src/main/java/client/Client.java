@@ -1,9 +1,15 @@
 package client;
 
+import app.controller.CustomerController;
 import app.controller.ProductController;
+import app.domain.Customer;
 import app.domain.Product;
+import app.repository.CustomerRepository;
+import app.repository.CustomerRepositoryMap;
 import app.repository.ProductRepository;
 import app.repository.ProductRepositoryList;
+import app.service.CustomerService;
+import app.service.CustomerServiceImpl;
 import app.service.ProductService;
 import app.service.ProductServiceImpl;
 
@@ -20,6 +26,7 @@ public class Client {
 
     private static Scanner scanner;
     private static ProductController productController;
+    private static CustomerController customerController;
 
     public static void main(String[] args) {
 
@@ -33,6 +40,11 @@ public class Client {
         // Создаём объект контроллера и в конструктор передаём ему объект сервиса,
         // чтобы контроллер мог к нему обращаться
         productController = new ProductController(productService);
+
+        CustomerRepository customerRepository = new CustomerRepositoryMap();
+        CustomerService customerService = new CustomerServiceImpl(customerRepository, productService);
+        customerController = new CustomerController(customerService);
+
 
         scanner = new Scanner(System.in);
 
@@ -100,7 +112,7 @@ public class Client {
                         productController.getAll().forEach(x -> System.out.println(x));
                         break;
                     case 3:
-                        System.out.println("Введите идентификатор продукта:");
+                        System.out.println("Введите идентифик2атор продукта:");
                         Long id = Long.parseLong(scanner.nextLine());
                         Product foundProduct = productController.getById(id);
                         System.out.println("Найденный продукт:");
@@ -150,6 +162,105 @@ public class Client {
     }
 
     public static void customerOperations() {
+        while (true) {
+            try {
+                System.out.println("Выберите действие с покупателями:");
+                System.out.println("1. Сохранить покупателя");
+                System.out.println("2. Получить всех покупателей");
+                System.out.println("3. Получить покупателя по ID");
+                System.out.println("4. Обновить покупателя");
+                System.out.println("5. Удалить покупателя по ID");
+                System.out.println("6. Удалить покупателя по имени");
+                System.out.println("7. Восстановить покупателя по ID");
+                System.out.println("8. Получить количество покупателей");
+                System.out.println("9. Получить стоимость корзины");
+                System.out.println("10. Получить среднюю цену продуктов в корзине");
+                System.out.println("11. Добавить продукт в корзину");
+                System.out.println("12. Удалить продукт из корзины");
+                System.out.println("13. Очистить корзину");
+                System.out.println("0. Выход");
 
+                int choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("Введите имя покупателя:");
+                        String name = scanner.nextLine();
+                        Customer customer = customerController.save(name);
+                        System.out.println("Сохранённый покупатель: " + customer);
+                        break;
+                    case 2:
+                        customerController.getAllCustomers().forEach(System.out::println);
+                        break;
+                    case 3:
+                        System.out.println("Введите ID покупателя:");
+                        Long id = Long.parseLong(scanner.nextLine());
+                        System.out.println("Покупатель: " + customerController.getCustomerById(id));
+                        break;
+                    case 4:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        System.out.println("Введите новое имя покупателя:");
+                       String newName = scanner.nextLine();
+                        customerController.customerUpdate(id, newName);
+                        break;
+                    case 5:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        customerController.deleteCustomerById(id);
+                        break;
+                    case 6:
+                        System.out.println("Введите имя покупателя:");
+                        name = scanner.nextLine();
+                        customerController.deleteCustomerByName(name);
+                        break;
+                    case 7:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        customerController.restoreCustomerById(id);
+                        break;
+                    case 8:
+                        System.out.println("Количество покупателей: " + customerController.getCustomerCount());
+                        break;
+                    case 9:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        System.out.println("Стоимость корзины: " + customerController.getCustomersCartTotalCostById(id));
+                        break;
+                    case 10:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        System.out.println("Средняя цена продукта: " + customerController.getAveragePriceOfCustomersCart(id));
+                        break;
+                    case 11:
+                        System.out.println("Введите ID покупателя:");
+                        Long customerId = Long.parseLong(scanner.nextLine());
+                        System.out.println("Введите ID продукта:");
+                        Long productId = Long.parseLong(scanner.nextLine());
+                        customerController.addProductToCustomersCart(customerId, productId);
+                        break;
+                    case 12:
+                        System.out.println("Введите ID покупателя:");
+                        customerId = Long.parseLong(scanner.nextLine());
+                        System.out.println("Введите ID продукта:");
+                        productId = Long.parseLong(scanner.nextLine());
+                        customerController.removeProductFromCustomersCart(customerId, productId);
+                        break;
+                    case 13:
+                        System.out.println("Введите ID покупателя:");
+                        id = Long.parseLong(scanner.nextLine());
+                        customerController.clearCustomersCart(id);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.err.println("Некорректный ввод!");
+                        break;
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
